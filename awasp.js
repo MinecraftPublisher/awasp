@@ -32,8 +32,7 @@ function stage0a0() {
 function stage0() {
     document.title = "Awasp";
     div.innerHTML = "you are in front of a house<br>\
-    <a href=\"#\" onclick=\"stage('stage1', 'awasp');\">go inside</a><br>\
-    <h4 style='margin-bottom: 1px;'>found dlc list</h4>";
+    <a href=\"#\" onclick=\"stage('stage1', 'awasp');\">go inside</a>";
 }
 
 function stage1() {
