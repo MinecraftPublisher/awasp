@@ -1,3 +1,3 @@
 function dd_0() {
-  div.innerHTML = "the drag-drop dlc is not available yet";
+  div.innerHTML = "dragging and dropping, left and right, nothing here though.";
 }
