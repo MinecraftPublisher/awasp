@@ -1,10 +1,11 @@
 function forgot_password() {
     div.innerHTML = `<div class="black"><br>
-        <h3>password recovery</h3>
+        <h2>password recovery</h2>
         <p>
         username: admin<br>
         password: 1234
         </p>
+        <br>
         <a href="#" onclick="stage('awasp', 'stagelogin')">return to login</a>
         </div>`
 }
