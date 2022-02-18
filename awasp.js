@@ -1,36 +1,4 @@
-function forgot_password() {
-    div.innerHTML = `
-        <h2>password recovery</h2>
-        username: admin<br>
-        password: 1234
-        <br>
-        <a href="#" onclick="stage('awasp', 'stagelogin')">return to login</a>`
-}
-
-function stagelogin() {
-    div.innerHTML = `
-        <img src="https://i.postimg.cc/TPRRfccw/download-2.png" width="100" height="100" style="margin-bottom: -10px;">
-    <h1>awasp login</h1>
-username: <input autocomplete="off" class="username" />
-<br>
-<div style="margin-top: 10px;">password: <input style="margin-left: 4px;" class="password" autocomplete="off" /></div>
-<br>
-<button class="login" onclick="window.name = document.getElementsByClassName('username')[0].value; window.pass = document.getElementsByClassName('password')[0].value;stage('awasp', 'stage0a0');">Login</button><br><br>
-<a href="#" onclick="stage('awasp', 'forgot_password');">Forgot Password</a>
-`
-}
-
 function stage0a0() {
-    if (window.name == "admin" && pass == "1234") {
-        stage('awasp', 'stage0');
-    } else {
-        div.innerHTML += '<br>Incorrect passcode';
-        setTimeout(() => { stage("awasp", "stagelogin"); }, 300);
-    }
-}
-
-function stage0() {
-    document.title = "Awasp";
     div.innerHTML = "you are in front of a house<br>\
     <a href=\"#\" onclick=\"stage('awasp', 'stage1');\">go inside</a>";
 }
