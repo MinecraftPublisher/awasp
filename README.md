@@ -1,2 +1,1 @@
-# Awasp
-This is currently in a beta stage and unavailable.
+Awasp is a weird/sadness based text-based game with an open API and a spooky vibe as a gift added to it. There are currently 5 games which 4 of them are unavailable DLCs and the main game which has the same name of the collection.
