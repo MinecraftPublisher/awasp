@@ -29,7 +29,7 @@ function stage0a0() {
         stage('awasp', 'stage0');
     } else {
         div.innerHTML += '<br>Incorrect passcode';
-        setTimeout(stage.bind("awasp", "stagelogin"), 300);
+        setTimeout(() => { stage("awasp", "stagelogin"); }, 300);
     }
 }
 
