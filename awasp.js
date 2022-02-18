@@ -1,28 +1,23 @@
 function forgot_password() {
-    div.innerHTML = `<div class="black"><br>
+    div.innerHTML = `
         <h2>password recovery</h2>
-        <p>
         username: admin<br>
         password: 1234
-        </p>
         <br>
-        <a href="#" onclick="stage('awasp', 'stagelogin')">return to login</a>
-        </div>`
+        <a href="#" onclick="stage('awasp', 'stagelogin')">return to login</a>`
 }
 
 function stagelogin() {
     div.innerHTML = `
-    <div class="black">
-        <br>
         <img src="https://i.postimg.cc/TPRRfccw/download-2.png" width="100" height="100" style="margin-bottom: -10px;">
     <h1>awasp login</h1>
 username: <input autocomplete="off" class="username" />
 <br>
 <div style="margin-top: 10px;">password: <input style="margin-left: 4px;" class="password" autocomplete="off" /></div>
-<br><br>
+<br>
 <button class="login" onclick="window.name = document.getElementsByClassName('username')[0].value; window.pass = document.getElementsByClassName('password')[0].value;stage('awasp', 'stage0a0');">Login</button><br><br>
 <a href="#" onclick="stage('awasp', 'forgot_password');">Forgot Password</a>
-</div>`
+`
 }
 
 function stage0a0() {
