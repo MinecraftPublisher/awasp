@@ -42,16 +42,16 @@ function stage0() {
 
 function stage1() {
     div.innerHTML = "you are in a house<br><br>\
-    <a href=\"#\" onclick=\"stage('awasp', 'stage1_kitchen');\">go to kitchen</a><br>\
-    <a href=\"#\" onclick=\"stage('awasp', 'stage1_basement');\">go to basement</a><br>\
-    <a href=\"#\" onclick=\"stage('awasp', 'stage1_bedroom');\">go to bedroom</a><br>\
+    <a href=\"#\" onclick=\"stage('awasp', 'stage1_kitchen');\">go to the kitchen</a><br>\
+    <a href=\"#\" onclick=\"stage('awasp', 'stage1_basement');\">go to the basement</a><br>\
+    <a href=\"#\" onclick=\"stage('awasp', 'stage1_bedroom');\">go to the bedroom</a><br>\
     <a href=\"#\" onclick=\"stage('awasp', 'stage0');\">go out</a>";
 }
 
 function stage1_kitchen() {
     div.innerHTML = "you are in the kitchen<br><br>\
     <a href=\"#\" onclick=\"stage('awasp', 'stage1_kitchen_closet');\">look in closet</a><br>\
-    <a href=\"#\" onclick=\"stage('awasp', 'stage1');\">go to living room</a>";
+    <a href=\"#\" onclick=\"stage('awasp', 'stage1');\">go to the living room</a>";
 }
 
 function stage1_kitchen_closet() {
