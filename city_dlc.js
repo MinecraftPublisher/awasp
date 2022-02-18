@@ -1,3 +1,3 @@
 function city_0() {
-  div.innerHTML = "the city dlc is not available yet";
+  div.innerHTML = "the outside world is too strange, and probably filled with monsters.";
 }
