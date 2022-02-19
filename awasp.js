@@ -8,7 +8,7 @@ function stage1() {
     <a href=\"#\" onclick=\"stage('awasp', 'stage1_kitchen');\">go to the kitchen</a><br>\
     <a href=\"#\" onclick=\"stage('awasp', 'stage1_basement');\">go to the basement</a><br>\
     <a href=\"#\" onclick=\"stage('awasp', 'stage1_bedroom');\">go to the bedroom</a><br>\
-    <a href=\"#\" onclick=\"stage('awasp', 'stage0');\">go out</a>";
+    <a href=\"#\" onclick=\"stage('awasp', 'stage0a0');\">go out</a>";
 }
 
 function stage1_kitchen() {
