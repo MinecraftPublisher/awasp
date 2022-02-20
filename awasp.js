@@ -14,8 +14,8 @@ function stage1() {
 
 function stage1_kitchen() {
     div.innerHTML = "you are in the kitchen<br><br>\
-    <a href=\"#\" onclick=\"stage('awasp', 'stage1_kitchen_closet');\">look in closet</a><br>\
-    <a href=\"#\" onclick=\"stage('awasp', 'stage1');\">go to the living room</a>";
+    <a href=\"#\" onclick=\"stage('awasp', 'stage1_kitchen_closet');\">look in the closet</a><br>\
+    <a href=\"#\" onclick=\"stage('awasp', 'stage1');\">go to the entrance</a>";
 }
 
 function stage1_kitchen_closet() {
@@ -28,12 +28,12 @@ function stage1_bedroom() {
     div.innerHTML = "you are now in the bedroom<br><br>\
     <a href=\"#\" onclick=\"stage('awasp', 'stage1_bedroom_bed');\">look under the bed</a><br>\
     "+(get('basement_visit') === 'true' ? "<a href=\"#\" onclick=\"stage('awasp', 'stage2');\">go to the living room</a><br>" : '')+"
-    <a href=\"#\" onclick=\"stage('awasp', 'stage1');\">back to the living room</a>";
+    <a href=\"#\" onclick=\"stage('awasp', 'stage1');\">back to the entrance</a>";
 }
 
 function stage1_basement() {
     div.innerHTML = "you go to the basement and " + (get('login_card_acquired') === 'true' || get('basement_visit') === 'true' ? 'find nothing' : 'find a strange keycard on the ground.') + "<br><br>\
-    <a href=\"#\" onclick=\"set('basement_visit', 'true'); stage('awasp', 'stage1');\">return to the living room</a><br>";
+    <a href=\"#\" onclick=\"set('basement_visit', 'true'); stage('awasp', 'stage1');\">return to the entrance</a><br>";
     if (get('basement_visit') === 'true' || get('login_card_acquired', 'true')) {
         return;
     } else {
@@ -50,5 +50,5 @@ function stage1_bedroom_bed() {
 function stage2() {
     div.innerHTML = "you are in the living room, it has a ton of chairs inside, a door to the bedroom and a TV that's flickering. you wonder what to do.<br><br>\
     <a href=\"#\" onclick=\"stage('awasp', 'stage1_bedroom');\">go to the bedroom</a><br>\
-    <a href=\"#\" onclick=\"stage('awasp', 'stage1');\">return</a>";
+    <a href=\"#\" onclick=\"stage('awasp', 'stage1');\">go to the entrance</a>";
 }
