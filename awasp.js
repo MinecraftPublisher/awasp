@@ -27,6 +27,7 @@ function stage1_kitchen_closet() {
 function stage1_bedroom() {
     div.innerHTML = "you are now in the bedroom<br><br>\
     <a href=\"#\" onclick=\"stage('awasp', 'stage1_bedroom_bed');\">look under the bed</a><br>\
+    "+(get('basement_visit') === 'true' ? "<a href=\"#\" onclick=\"stage('awasp', 'stage2');\">go to the living room</a><br>" : '')+"
     <a href=\"#\" onclick=\"stage('awasp', 'stage1');\">back to the living room</a>";
 }
 
