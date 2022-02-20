@@ -8,6 +8,7 @@ function stage1() {
     <a href=\"#\" onclick=\"stage('awasp', 'stage1_kitchen');\">go to the kitchen</a><br>\
     <a href=\"#\" onclick=\"stage('awasp', 'stage1_basement');\">go to the basement</a><br>\
     <a href=\"#\" onclick=\"stage('awasp', 'stage1_bedroom');\">go to the bedroom</a><br>\
+    "+(get('basement_visit') === 'true' ? "<a href=\"#\" onclick=\"stage('awasp', 'stage2');\">go to the living room</a><br>" : "")+"\
     <a href=\"#\" onclick=\"stage('awasp', 'stage0a0');\">go out</a>";
 }
 
@@ -30,17 +31,23 @@ function stage1_bedroom() {
 }
 
 function stage1_basement() {
-    div.innerHTML = "you go to the basement and " + (get('login_card_acquired') == 'true' || get('basement_visit') == 'true' ? 'find nothing' : 'find a strange keycard on the ground.') + "<br><br>\
-    <a href=\"#\" onclick=\"set('basement_visit', 'true'); stage('awasp', 'stage1');\">return to the living room</a><br>"
-    if (get('basement_visit') == 'true' || get('login_card_acquired', 'true')) {
+    div.innerHTML = "you go to the basement and " + (get('login_card_acquired') === 'true' || get('basement_visit') === 'true' ? 'find nothing' : 'find a strange keycard on the ground.') + "<br><br>\
+    <a href=\"#\" onclick=\"set('basement_visit', 'true'); stage('awasp', 'stage1');\">return to the living room</a><br>";
+    if (get('basement_visit') === 'true' || get('login_card_acquired', 'true')) {
         return;
     } else {
-        div.innerHTML += "<a href=\"#\" onclick=\"set('login_card_acquired', 'true'); alert('picked up the card');\">pick up the keycard</a><br>"
+        div.innerHTML += "<a href=\"#\" onclick=\"set('login_card_acquired', 'true'); alert('picked up the card');\">pick up the keycard</a><br>";
     }
 }
 
 function stage1_bedroom_bed() {
-    div.innerHTML = "you look under the bedroom and find a knife down there that has blood on it<br><br>\
-    <a href=\"#\" onclick=\"set('knife_acquired', 'true'); stage('awasp', 'stage1');\">pick it up i need it</a><br>\
-    <a href=\"#\" onclick=\"stage('awasp', 'stage1_bedroom');\">back to the bedroom</a>"
+    div.innerHTML = "you look under the bedroom and find "+(get('knife_acquired') === 'true' ? 'nothing there' : 'a knife down there that has blood on it')+".<br><br>\
+    "+(get('knife_acquired') === 'true' ? "" : "<a href=\"#\" onclick=\"set('knife_acquired', 'true'); stage('awasp', 'stage1');\">pick it up i need it</a><br>")+"\
+    <a href=\"#\" onclick=\"stage('awasp', 'stage1_bedroom');\">back to the bedroom</a>";
+}
+
+function stage2() {
+    div.innerHTML = "you are in the living room, it has a ton of chairs inside, a door to the bedroom and a TV that's flickering. you wonder what to do.<br><br>\
+    <a href=\"#\" onclick=\"stage('awasp', 'stage1_bedroom');\">go to the bedroom</a><br>\
+    <a href=\"#\" onclick=\"stage('awasp', 'stage1');\">return</a>";
 }
