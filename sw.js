@@ -8,7 +8,7 @@ var cacheFiles = [
 	'https://thedarkpiano.com/mp3/Myuu-Wasted-Wonderland.mp3',
 	'./',
 	'./index.html',
-  './sw.js'
+  './sw.js',
 
 	'./list',
 	'./awasp.js',
