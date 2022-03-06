@@ -11,7 +11,7 @@
 
 <body>
     <audio loop volume="0.5">
-        <source src="https://thedarkpiano.com/mp3/Myuu-Wasted-Wonderland.mp3" type="audio/mp3">
+        <source src="./static/files/Myuu-Wasted-Wonderland.mp3" type="audio/mp3">
     </audio>
     <block
         style="z-index: 100000; cursor: pointer; position: fixed; top: 0; left: 0; background-color: #2d2a2a; width: 100vw; height: 100vh; margin: 0; display: grid; place-items: center; text-align: center;"
@@ -40,20 +40,6 @@
             -->
         <a class="music" style="color: pink;" href="#">[loading]</a><br>
         <script>
-            const url_sw = "https://minecraftpublisher.github.io/awasp/sw.js";
-            if ('serviceWorker' in navigator) {
-
-  navigator.serviceWorker
-      .register(url_sw, {scope: './'})
-      .then(function () {
-          console.log("Service Worker Registered");
-      })
-    .catch(function(err) {
-      console.log("Service Worker Failed to Register", err);
-    })
-
-}
-            
             function upd8() {
                 const music = document.querySelector(".music");
                 if(localStorage.getItem("music_disabled") === 'true') {
@@ -64,12 +50,12 @@
                     music.onclick = function() {
                         localStorage.setItem("music_disabled", "false");
                         document.querySelector('audio').volume = 1;
-                        document.querySelector('audio').src = 'https://thedarkpiano.com/mp3/Myuu-Wasted-Wonderland.mp3';
+                        document.querySelector('audio').src = './static/Myuu-Wasted-Wonderland.mp3';
                         upd8();
                     }
                 } else {
                     document.querySelector('audio').volume = 1;
-                    document.querySelector('audio').src = 'https://thedarkpiano.com/mp3/Myuu-Wasted-Wonderland.mp3';
+                    document.querySelector('audio').src = './static/Myuu-Wasted-Wonderland.mp3';
                     document.querySelector('audio').play();
                     music.innerHTML = 'turn off music';
                     music.onclick = function() {
@@ -227,7 +213,7 @@
             click_sfx.play();
         }
 
-        function stage(name, stage) {
+        function stage(name, stage_id) {
             div.innerHTML = "<h1 class='black'>loading...</h1>";
             title = document.title;
             document.title = "progress saving...";
@@ -236,16 +222,33 @@
                 setTimeout(function () {
                     document.title = title;
                     try {
-                        eval(stage + "();");
-                        set("game_data_" + name, stage);
+                        eval(stage_id + "();");
+                        set("game_data_" + name, stage_id);
                     } catch (ex) {
-                        div.innerHTML = "stage <b>" + stage + "</b> not found<br>\
+                        fetch(url + name + '/' + (stage_id.split('__')[0] || stage_id) + '.js?v=' + Math.floor(Math.random() * 999999).toString()).then(res => res.text().then(() => {
+                            require(url + name + '/' + (stage_id.split('__')[0] || stage_id) + '.js?v=' + Math.floor(Math.random() * 999999).toString(), name, stage_id)
+                        })).catch(() => {
+                            div.innerHTML = "stage <b>" + stage_id + "</b> not found<br>\
                         please reset your progress if the game is loading the wrong stage.<br><br>\
-                        <a href=\"#\" onclick=\"stage('"+ name + "', '" + stage + "');\">reload</a><br>\
-                        <a href=\"#\" onclick=\"stage('"+name+"', '"+get("game_data_" + name)+"');\">return to previous stage</a>";
+                        <a href=\"#\" onclick=\"stage('" + name + "', '" + stage_id + "');\">reload</a><br>\
+                        <a href=\"#\" onclick=\"stage('" + name + "', '" + get("game_data_" + name) + "');\">return to previous stage</a>";
+                        });
                     }
                 }, 200)
             }, 300)
+        }
+
+        function write_utils() {
+            (window.require = (url, title, id) => {
+                fetch(url).then(r => r.text()).then((text) => {
+                    const elem = document.createElement('script');
+                    elem.innerHTML = text;
+                    document.body.appendChild(elem);
+                    setTimeout(() => {
+                        eval(`stage('${title}', '${id}');`);
+                    }, 100);
+                });
+            });
         }
 
         if (get('window_playing') === 'true' || get('window_playing') == null) {
@@ -253,11 +256,7 @@
                 if (audio.currentTime > 0.1) {
                     clearInterval(audio_try);
                 } else {
-                    try {
-                        audio.play();
-                    } catch {
-
-                    }
+                    audio.play().catch(() => clearInterval(audio_try));
                 }
             }, 200);
         }
@@ -298,7 +297,7 @@
             }, 1000)
         }
 
-        const url = "./";
+        const url = "./static/";
         function load_list() {
             document.querySelector('debug').style.display = 'block';
             div.innerHTML = '<h1 style="margin-bottom: -25px; margin-top: -10px;">awasp games</h1><br>Loading...'
@@ -311,9 +310,9 @@
                     content = content.split('\n');
                     content = content.map(x => x.split(' - ')).filter(x => x.length === 2);
                     for (const game of content) {
+                        game[1] = game[1].replace('\n', '').replace('\r', '');
                         if (game[1] === 'markup version!') {
                             setTimeout(async function () {
-                                console.log(content)
                                 div.innerHTML += `<br><a href="#">Markup version: ${markup_v}</a> | <span style="color: DarkSeaGreen;">Server version: ${game[0]}</span><a href="https://minecraftpublisher.github.io/awasp/?v=${Math.floor(Math.random() * 999999).toString()}" style="color: Red">${markup_v !== game[0] ? ` | please update your client version` : ``}</a><br>`;
                                 const game_url = "https://api.github.com/repos/MinecraftPublisher/awasp/commits?path=static/list&v=" + Math.floor(Math.random() * 999999).toString();
                                 const game_commits = await fetch(game_url).then(r => r.json()).catch(r8limit.bind(content));
@@ -325,31 +324,32 @@
                                 }
                             }, 300)
                         } else if (game[0] !== '') {
+                            const name = game[0].split('/')[game[0].split('/').length - 1];
                             const game_url = "https://api.github.com/repos/MinecraftPublisher/awasp/commits?path=static/" + game[0] + ".js&v=" + Math.floor(Math.random() * 999999).toString();
                             const game_commits = await fetch(game_url).then(r => r.json()).catch(r8limit.bind(content));
                             let latest_commit = " | " + game_commits[0]?.commit?.message;
-                            if (latest_commit.toLowerCase() === " | update " + game[0] + ".js" || latest_commit.toLowerCase() === " | create " + game[0] + ".js" || latest_commit.toLowerCase() === " | undefined") latest_commit = "";
-                            div.innerHTML += `<a href="#" onclick="load_stage('${game[0]}', '${game[1]}');">${game[0].replaceAll('_', ' ')}</a><span style="color: DarkSeaGreen;">${latest_commit}</span><br>`
+                            if (latest_commit.toLowerCase() === " | update " + name + ".js" || latest_commit.toLowerCase() === " | create " + name + ".js" || latest_commit.toLowerCase() === " | undefined") latest_commit = "";
+                            div.innerHTML += `<a href="#" onclick="load_stage('${name}', '${game[1]}');">${name.replaceAll('_', ' ')}</a><span style="color: DarkSeaGreen;">${latest_commit}</span><br>`
+
                         }
                     }
                 }
             }, 400)
         }
 
-        function load_stage(stage_title = 'main', stage_id) {
+        function load_stage(stage_title = 'main_menu', stage_id = 'main') {
             document.querySelector('debug').style.display = 'none';
             div.innerHTML = "<h1 class='black'>loading...</h1>";
             if (!window.loaded[stage_id]) {
                 const script = document.createElement('script');
-                fetch(url + stage_title + '.js?v=' + Math.floor(Math.random() * 999999).toString()).then(r => r.text().then((data) => {
+                fetch(url + stage_title + '/' + stage_title + '.js?v=' + Math.floor(Math.random() * 999999).toString()).then(r => r.text().then((data) => {
                     script.innerHTML = data;
                     document.body.appendChild(script);
                     setTimeout(function () {
                         window.loaded[stage_id] = true;
                         if (get('game_data_' + stage_title) === '' || get('game_data_' + stage_title) === undefined || get('game_data_' + stage_title) == null) {
                             stage(stage_title, stage_id);
-                        }
-                        else {
+                        } else {
                             stage(stage_title, get('game_data_' + stage_title));
                         }
                     }, 100)
@@ -443,13 +443,14 @@
         fetch(url + 'list?v=' + Math.floor(Math.random() * 999999).toString()).then(r => r.text().then(data => {
             if (data) {
                 if (!window.loaded) window.loaded = [];
+                write_utils();
                 load_list();
             } else {
                 div.innerHTML = "<h1>you seem to be offline, awasp does not work without an internet connection.</h1>"
             }
         })).catch(() => {
             div.innerHTML = "<h1>you seem to be offline, awasp does not work without an internet connection.</h1>"
-        })
+        });
     </script>
     <style>
         a:visited {
