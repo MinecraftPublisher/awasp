@@ -6,7 +6,7 @@
     <link rel="shortcut icon" href="https://i.postimg.cc/TPRRfccw/download-2.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Awasp</title>
-    <script>window.markup_v = '1.1 (audio bug fix)'</script>
+    <script>const markup_v = '1.2 (important changes)'</script>
 </head>
 
 <body>
@@ -83,7 +83,7 @@
 
         @font-face {
             font-family: 'WhirlyWood';
-            src: url(./static/Wirly);
+            src: url(./static/files/whirlywood.ttf);
         }
 
         debug {
@@ -211,7 +211,18 @@
 
         window.onclick = function () {
             click_sfx.play();
-        }
+        };
+
+        const importScene = (url, title, id) => {
+            fetch(url).then(r => r.text()).then((text) => {
+                const elem = document.createElement('script');
+                elem.innerHTML = text;
+                document.body.appendChild(elem);
+                setTimeout(() => {
+                    eval(`stage('${title}', '${id}');`);
+                }, 100);
+            });
+        };
 
         function stage(name, stage_id) {
             div.innerHTML = "<h1 class='black'>loading...</h1>";
@@ -226,7 +237,7 @@
                         set("game_data_" + name, stage_id);
                     } catch (ex) {
                         fetch(url + name + '/' + (stage_id.split('__')[0] || stage_id) + '.js?v=' + Math.floor(Math.random() * 999999).toString()).then(res => res.text().then(() => {
-                            require(url + name + '/' + (stage_id.split('__')[0] || stage_id) + '.js?v=' + Math.floor(Math.random() * 999999).toString(), name, stage_id)
+                            importScene(url + name + '/' + (stage_id.split('__')[0] || stage_id) + '.js?v=' + Math.floor(Math.random() * 999999).toString(), name, stage_id)
                         })).catch(() => {
                             div.innerHTML = "stage <b>" + stage_id + "</b> not found<br>\
                         please reset your progress if the game is loading the wrong stage.<br><br>\
@@ -236,19 +247,6 @@
                     }
                 }, 200)
             }, 300)
-        }
-
-        function write_utils() {
-            (window.require = (url, title, id) => {
-                fetch(url).then(r => r.text()).then((text) => {
-                    const elem = document.createElement('script');
-                    elem.innerHTML = text;
-                    document.body.appendChild(elem);
-                    setTimeout(() => {
-                        eval(`stage('${title}', '${id}');`);
-                    }, 100);
-                });
-            });
         }
 
         if (get('window_playing') === 'true' || get('window_playing') == null) {
@@ -443,7 +441,6 @@
         fetch(url + 'list?v=' + Math.floor(Math.random() * 999999).toString()).then(r => r.text().then(data => {
             if (data) {
                 if (!window.loaded) window.loaded = [];
-                write_utils();
                 load_list();
             } else {
                 div.innerHTML = "<h1>you seem to be offline, awasp does not work without an internet connection.</h1>"
