@@ -253,7 +253,11 @@
                 if (audio.currentTime > 0.1) {
                     clearInterval(audio_try);
                 } else {
-                    audio.play().catch(() => clearInterval(audio_try));
+                    audio.play().catch(e => {
+                        if(e.message.indexOf('interact') === -1) {
+                            clearInterval(audio_try)
+                        }
+                    });
                 }
             }, 200);
         }
