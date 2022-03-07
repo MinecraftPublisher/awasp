@@ -6,7 +6,7 @@
     <link rel="shortcut icon" href="https://i.postimg.cc/TPRRfccw/download-2.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Awasp</title>
-    <script>const markup_v = '1.2 (important changes)'</script>
+    <script>const markup_v = '1.3 (important changes)'</script>
 </head>
 
 <body>
@@ -27,10 +27,10 @@
         style="-webkit-animation: squiggly-anim 1.3s linear infinite; animation: squiggly-anim 1.3s linear infinite;">
         <a style="color: DarkOrange;" href="#" onclick="window.loaded = []; load_list();">refresh stage cache</a><br>
         <a style="color: DarkOrchid;" href="#"
-            onclick="document.querySelectorAll('.test').forEach(elem => { elem.style.animation = 'none'; elem.style['-webkit-animation'] = 'none'; }); document.querySelector('.font').innerHTML = `* { font-family: 'WhirlyWood', 'Amatic SC'; text-transform: lowercase; }`;">more
+            onclick="document.querySelectorAll('.test').forEach(elem => { elem.style.animation = 'none'; elem.style['-webkit-animation'] = 'none'; }); document.querySelector('.font').innerHTML = `* { font-family: 'WhirlyWood', 'Amatic SC'; text-transform: lowercase; font-size: 1rem; }`;">more
             readable version</a><br>
         <a style="color: DarkKhaki" href="#"
-            onclick="document.querySelectorAll('.test').forEach(elem => { elem.style.animation = 'none'; elem.style['-webkit-animation'] = 'none'; }); document.querySelector('.font').innerHTML = `* { font-family: serif; text-transform: lowercase; }`;">revert
+            onclick="document.querySelectorAll('.test').forEach(elem => { elem.style.animation = 'none'; elem.style['-webkit-animation'] = 'none'; }); document.querySelector('.font').innerHTML = `* { font-family: serif; text-transform: lowercase; font-size: 1rem; }`;">revert
             to no font</a><br>
 <!--
         <br><a style="color: red; padding: 2px; border: 2px double red;" href="#"
@@ -50,12 +50,12 @@
                     music.onclick = function() {
                         localStorage.setItem("music_disabled", "false");
                         document.querySelector('audio').volume = 1;
-                        document.querySelector('audio').src = './static/Myuu-Wasted-Wonderland.mp3';
+                        document.querySelector('audio').src = './static/files/Myuu-Wasted-Wonderland.mp3';
                         upd8();
                     }
                 } else {
                     document.querySelector('audio').volume = 1;
-                    document.querySelector('audio').src = './static/Myuu-Wasted-Wonderland.mp3';
+                    document.querySelector('audio').src = './static/files/Myuu-Wasted-Wonderland.mp3';
                     document.querySelector('audio').play();
                     music.innerHTML = 'turn off music';
                     music.onclick = function() {
@@ -74,8 +74,7 @@
     <bottom class="test" style="text-align: left; position: absolute; z-index: 2; bottom: 20px; left: 10px;">
         <a style="color: LightBlue;" href="#" onclick="load_list();">main menu</a><br>
         <b><a style="color: FireBrick;" href="#"
-                onclick="if(prompt('type ok to confirm') === 'ok') { set('stage', ''); localStorage.clear(); load_list(); } else {  }">reset
-                (wipe all game data)</a></b>
+                onclick="if(prompt('type ok to confirm') === 'ok') { set('stage', ''); localStorage.clear(); load_list(); } else {  }">reset</a></b>
     </bottom>
 
     <style>
@@ -327,7 +326,7 @@
                             const game_commits = await fetch(game_url).then(r => r.json()).catch(r8limit.bind(content));
                             let latest_commit = " | " + game_commits[0]?.commit?.message;
                             if (latest_commit.toLowerCase() === " | update " + name + ".js" || latest_commit.toLowerCase() === " | create " + name + ".js" || latest_commit.toLowerCase() === " | undefined") latest_commit = "";
-                            div.innerHTML += `<a href="#" onclick="load_stage('${name}', '${game[1]}');">${name.replaceAll('_', ' ')}</a><span style="color: DarkSeaGreen;">${latest_commit}</span><br>`
+                            div.innerHTML += `<a href="#" onclick="load_stage('${name}', '${game[1]}');">${name.replaceAll('_', ' ')}</a><span style="color: DarkSeaGreen;" class="commit">${latest_commit}</span><br>`
 
                         }
                     }
@@ -534,8 +533,12 @@
                 max-width: 100%;
             }
 
+            .commit {
+                font-size: 0.8rem;
+            }
+
             debug {
-                opacity: 0;
+                opacity: 5%;
             }
 
             h1 {
