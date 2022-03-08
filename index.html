@@ -7,6 +7,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Awasp</title>
     <script>const markup_v = '1.3.1-0 (important changes)'</script>
+    <script defer>
+        const click_sfx = new Audio('./static/files/click.mp3');
+        click_sfx.volume = 1;
+
+        window.onclick = function () {
+            click_sfx.currentTime = 0.31;
+            click_sfx.play();
+        };
+    </script>
 </head>
 
 <body>
@@ -202,15 +211,9 @@
         </defs>
     </svg>
     <script>
+        const audio = document.getElementsByTagName("audio")[0];
         const div = document.getElementsByClassName("game")[0];
         let title = 'Awasp';
-        const audio = document.getElementsByTagName("audio")[0];
-        const click_sfx = new Audio('https://www.fesliyanstudios.com/soundeffects-download.php?id=388');
-        click_sfx.volume = 1;
-
-        window.onclick = function () {
-            click_sfx.play();
-        };
 
         const importScene = (url, title, id) => {
             fetch(url).then(r => r.text()).then((text) => {
@@ -220,7 +223,7 @@
                 setTimeout(() => {
                     eval(`stage('${title}', '${id}');`);
                 }, 100);
-            });
+            }).catch(r8limit);
         };
 
         function stage(name, stage_id) {
