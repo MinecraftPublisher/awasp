@@ -6,7 +6,7 @@
     <link rel="shortcut icon" href="https://i.postimg.cc/TPRRfccw/download-2.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Awasp</title>
-    <script>const markup_v = '1.3.1-0 (important changes)'</script>
+    <script>const markup_v = '2.0 (repository system)'</script>
     <script defer>
         const click_sfx = new Audio('./static/files/click.mp3');
         click_sfx.volume = 1;
@@ -15,6 +15,17 @@
             click_sfx.currentTime = 0.31;
             click_sfx.play();
         };
+
+        const scripts = JSON.parse(localStorage.getItem('packages') || '[]');
+        for (const script of scripts) {
+            fetch(script).then(res => res.text().then((text) => {
+                const elem = document.createElement('script');
+                elem.innerHTML = text;
+                document.body.appendChild(elem);
+            })).catch((e) => {
+                console.warn('An error occured when loading script: ' + script + ', Error: ' + e);
+            })
+        }
     </script>
 </head>
 
@@ -239,8 +250,8 @@
                         eval(stage_id + "();");
                         set("game_data_" + name, stage_id);
                     } catch (ex) {
-                        fetch(url + name + '/' + (stage_id.split('__')[0] || stage_id) + '.js?v=' + Math.floor(Math.random() * 999999).toString()).then(res => res.text().then(() => {
-                            importScene(url + name + '/' + (stage_id.split('__')[0] || stage_id) + '.js?v=' + Math.floor(Math.random() * 999999).toString(), name, stage_id)
+                        fetch('./static/' + name + '/' + (stage_id.split('__')[0] || stage_id) + '.js?v=' + Math.floor(Math.random() * 999999).toString()).then(res => res.text().then(() => {
+                            importScene('./static/' + name + '/' + (stage_id.split('__')[0] || stage_id) + '.js?v=' + Math.floor(Math.random() * 999999).toString(), name, stage_id)
                         })).catch(() => {
                             div.innerHTML = "stage <b>" + stage_id + "</b> not found<br>\
                         please reset your progress if the game is loading the wrong stage.<br><br>\
@@ -302,21 +313,25 @@
             }, 1000)
         }
 
-        const url = "./static/";
+        /* Modify this variable in your package to load additional games into memory */
+        let static_games = [];
+
         function load_list() {
             pause_load_stage = true;
             document.querySelector('debug').style.display = 'block';
             div.innerHTML = '<h1 style="margin-bottom: -25px; margin-top: -10px;">awasp games</h1><br>Loading...'
             setTimeout(async function () {
-                let content = await fetch(url + "list?v=" + Math.floor(Math.random() * 999999).toString()).then(r => r.text()).catch(r8limit);
+                let content = await fetch("./static/list?v=" + Math.floor(Math.random() * 999999).toString()).then(r => r.text()).catch(r8limit);
                 if (content.startsWith('429')) {
                     r8limit(content);
                 } else {
                     div.innerHTML = '<h1 style="margin-bottom: -25px; margin-top: -10px;">awasp games</h1><br>'
                     content = content.split('\n');
-                    content = content.map(x => x.split(' - ')).filter(x => x.length === 2);
-                    for (const game of content) {
-                        game[1] = game[1].replace('\n', '').replace('\r', '');
+                    content = content.map(x => x.split(' - ')).filter(x => x.length === 2).map(x => {
+                        x[1] = x[1].replace('\n', '').replace('\r', '');
+                        return x;
+                    });
+                    for (const game of [...static_games, ...content]) {
                         if (game[1] === 'markup version!') {
                             setTimeout(async function () {
                                 div.innerHTML += `<br><a href="#">Markup version: ${markup_v}</a> | <span style="color: DarkSeaGreen;">Server version: ${game[0]}</span><a href="https://minecraftpublisher.github.io/awasp/?v=${Math.floor(Math.random() * 999999).toString()}" style="color: Red">${markup_v !== game[0] ? ` | please update your client version` : ``}</a><br>`;
@@ -331,11 +346,16 @@
                             }, 300)
                         } else if (game[0] !== '') {
                             const name = game[0].split('/')[game[0].split('/').length - 1];
-                            const game_url = "https://api.github.com/repos/MinecraftPublisher/awasp/commits?path=static/" + game[0] + ".js&v=" + Math.floor(Math.random() * 999999).toString();
-                            const game_commits = await fetch(game_url).then(r => r.json()).catch(r8limit.bind(content));
-                            let latest_commit = " | " + game_commits[0]?.commit?.message;
-                            if (latest_commit.toLowerCase() === " | update " + name + ".js" || latest_commit.toLowerCase() === " | create " + name + ".js" || latest_commit.toLowerCase() === " | undefined") latest_commit = "";
-                            div.innerHTML += `<a href="#" onclick="load_stage('${name}', '${game[1]}');">${name.replaceAll('_', ' ')}</a><span style="color: DarkSeaGreen;" class="commit">${latest_commit}</span><br>`
+                            let latest_commit = '';
+                            if(content.indexOf(game) > -1) {
+                                const game_url = "https://api.github.com/repos/MinecraftPublisher/awasp/commits?path=static/" + game[0] + ".js&v=" + Math.floor(Math.random() * 999999).toString();
+                                const game_commits = await fetch(game_url).then(r => r.json()).catch(r8limit.bind(content));
+                                latest_commit = " | " + game_commits[0]?.commit?.message;
+                                if (latest_commit.toLowerCase() === " | update " + name + ".js" || latest_commit.toLowerCase() === " | create " + name + ".js" || latest_commit.toLowerCase() === " | undefined") latest_commit = "";
+                            } else {
+                                latest_commit = " | external game";
+                            }
+                            div.innerHTML += `<a href="#" onclick="load_stage('${name}', '${game[1]}');">${name.replaceAll('_', ' ')}</a><span style="color: DarkSeaGreen;" class="commit">${latest_commit || ' | no notes found'}</span><br>`
 
                         }
                     }
@@ -352,7 +372,7 @@
             div.innerHTML = "<h1 class='black'>loading...</h1>";
             if (!window.loaded[stage_id]) {
                 const script = document.createElement('script');
-                fetch(url + stage_title + '/' + stage_title + '.js?v=' + Math.floor(Math.random() * 999999).toString()).then(r => r.text().then((data) => {
+                fetch('./static/' + stage_title + '/' + stage_title + '.js?v=' + Math.floor(Math.random() * 999999).toString()).then(r => r.text().then((data) => {
                     script.innerHTML = data;
                     document.body.appendChild(script);
                     setTimeout(function () {
@@ -451,7 +471,7 @@
             } */
         }, 500);
 
-        fetch(url + 'list?v=' + Math.floor(Math.random() * 999999).toString()).then(r => r.text().then(data => {
+        fetch('./static/' + 'list?v=' + Math.floor(Math.random() * 999999).toString()).then(r => r.text().then(data => {
             if (data) {
                 if (!window.loaded) window.loaded = [];
                 load_list();
