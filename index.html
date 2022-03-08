@@ -439,9 +439,10 @@
                 set('time_elapsed', parseInt(get('time_elapsed')) + 500);
             }
 
-            if (parseInt(get('time_elapsed')) % 30000 === 0 && Math.random() < 0.1 && running_glitch === false && document.hasFocus()) {
+            // Piece of code used to declare interception
+            /* if (parseInt(get('time_elapsed')) % 30000 === 0 && Math.random() < 0.1 && running_glitch === false && document.hasFocus()) {
                 interception();
-            }
+            } */
         }, 500);
 
         fetch(url + 'list?v=' + Math.floor(Math.random() * 999999).toString()).then(r => r.text().then(data => {
