@@ -214,6 +214,7 @@
         const audio = document.getElementsByTagName("audio")[0];
         const div = document.getElementsByClassName("game")[0];
         let title = 'Awasp';
+        let pause_load_stage = false;
 
         const importScene = (url, title, id) => {
             fetch(url).then(r => r.text()).then((text) => {
@@ -303,6 +304,7 @@
 
         const url = "./static/";
         function load_list() {
+            pause_load_stage = true;
             document.querySelector('debug').style.display = 'block';
             div.innerHTML = '<h1 style="margin-bottom: -25px; margin-top: -10px;">awasp games</h1><br>Loading...'
             setTimeout(async function () {
@@ -337,11 +339,15 @@
 
                         }
                     }
+                    setTimeout(function (){
+                        pause_load_stage = false;
+                    }, 1000)
                 }
             }, 400)
         }
 
         function load_stage(stage_title = 'main_menu', stage_id = 'main') {
+            if(pause_load_stage) return;
             document.querySelector('debug').style.display = 'none';
             div.innerHTML = "<h1 class='black'>loading...</h1>";
             if (!window.loaded[stage_id]) {
