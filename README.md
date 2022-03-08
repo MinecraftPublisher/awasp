@@ -1,1 +1,4 @@
 Awasp is a weird/sadness based text-based game with an open API and a spooky vibe as a gift added to it. There are currently 5 games which 4 of them are unavailable DLCs and the main game which has the same name of the collection.
+
+## Future plans/Game story
+Awasp takes place in a post-apocalypse event at a dystopia that was once called "A Wonderland", Ruled over by people pretending to be happy. However, Some unknown event caused all the humans to die, But the player. It seems that after that horrible event, The history started to repeat itself every time all the humans, Including the player died. This seems to be alterable through changing history in a way that the player does not die by killing themselves. The creator of "A Wonderland" cursed the place for everybody to die to that event over and over again, Unless the player goes into their grave rather than killing themselves, 
