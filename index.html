@@ -6,7 +6,7 @@
     <link rel="shortcut icon" href="https://i.postimg.cc/TPRRfccw/download-2.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Awasp</title>
-    <script>const markup_v = '2.1'</script>
+    <script>const markup_v = '2.1.0 (ratelimit improvements)'</script>
     <script defer>
         const click_sfx = new Audio('./static/files/click.mp3');
         click_sfx.volume = 1;
@@ -47,7 +47,7 @@
         </div>
         </text>
     </block>
-    <div class="game test"></div>
+    <div class="game test">Loading...</div>
 
     <debug class="test"
         style="-webkit-animation: squiggly-anim 1.3s linear infinite; animation: squiggly-anim 1.3s linear infinite;">
@@ -101,6 +101,7 @@
         <div class="autosave" style="display: none;">
             <?xml version="1.0" encoding="UTF-8" standalone="no"?> <!-- Created with Inkscape (http://www.inkscape.org/) --> <svg xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:cc="http://web.resource.org/cc/" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns1="http://sozi.baierouge.fr" id="svg1" sodipodi:docname="save.svg" viewBox="0 0 60 60" sodipodi:version="0.32" version="1.0" y="0" x="0" inkscape:version="0.37" sodipodi:docbase="/home/danny/flat/scalable/actions" > <sodipodi:namedview id="base" bordercolor="#666666" inkscape:pageshadow="2" inkscape:window-width="1016" pagecolor="#ffffff" inkscape:zoom="9.82388224" inkscape:window-x="0" borderopacity="1.0" inkscape:cx="40.9606095" inkscape:cy="21.8910673" inkscape:window-y="0" inkscape:window-height="685" inkscape:pageopacity="0.0" /> <path id="path646" style="stroke-linejoin:round;fill-rule:evenodd;stroke-linecap:round;stroke-width:1pt;fill:#7f7f7f" transform="matrix(1.0594 0 0 1.0594 -1.4619 -1.891)" d="m8.375 6.0625c-1.108 0-2 0.892-2 2v44.844c0 1.108 0.892 2 2 2h43.062c1.108 0 2-0.892 2-2v-40.25l-6.625-6.5935h-38.437z" /> <path id="path655" style="fill-rule:evenodd;stroke:#333333;stroke-width:3.125;fill:#bfbfbf" d="m15.914 4.6592v13.242c0 1.353 1.188 2.442 2.665 2.442h17.908c1.477 0 2.666-1.089 2.666-2.442v-13.242l-23.239 0.0002z" sodipodi:stroke-cmyk="(0 0 0 0.8)" /> <rect id="rect656" style="fill-rule:evenodd;stroke:#333333;stroke-width:1.875;fill:#7f7f7f" rx="1.3992" height="9.0411" width="6.5871" sodipodi:stroke-cmyk="(0 0 0 0.8)" y="7.9428" x="19.516" /> <path id="path659" style="stroke-linejoin:round;stroke:#333333;stroke-linecap:round;stroke-width:2.9499;fill:none" transform="matrix(1.0594 0 0 1.0594 -1.4619 -1.891)" d="m8.375 6.0625c-1.108 0-2 0.892-2 2v44.844c0 1.108 0.892 2 2 2h43.063c1.108 0 2-0.892 2-2v-40.25l-6.626-6.5935h-38.437z" sodipodi:stroke-cmyk="(0 0 0 0.8)" /> <rect id="rect731" style="stroke-linejoin:round;fill-rule:evenodd;fill-opacity:.75;stroke:#333333;stroke-linecap:round;stroke-width:1.875;fill:#d9d9d9" rx="2.0351" height="28.611" width="41.747" sodipodi:stroke-cmyk="(0 0 0 0.8)" y="24.011" x="9.3572" /> <metadata > <rdf:RDF > <cc:Work > <dc:format >image/svg+xml</dc:format > <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage" /> <cc:license rdf:resource="http://creativecommons.org/licenses/publicdomain/" /> <dc:publisher > <cc:Agent rdf:about="http://openclipart.org/" > <dc:title >Openclipart</dc:title > </cc:Agent > </dc:publisher > <dc:title >ftfilesave</dc:title > <dc:date >2011-01-31T02:01:30</dc:date > <dc:description >Originally uploaded by Danny Allen for OCAL 0.18 this icon is part of the flat theme</dc:description > <dc:source >https://openclipart.org/detail/112549/ftfilesave-by-anonymous</dc:source > <dc:creator > <cc:Agent > <dc:title >Anonymous</dc:title > </cc:Agent > </dc:creator > <dc:subject > <rdf:Bag > <rdf:li >flat</rdf:li > <rdf:li >icon</rdf:li > <rdf:li >theme</rdf:li > </rdf:Bag > </dc:subject > </cc:Work > <cc:License rdf:about="http://creativecommons.org/licenses/publicdomain/" > <cc:permits rdf:resource="http://creativecommons.org/ns#Reproduction" /> <cc:permits rdf:resource="http://creativecommons.org/ns#Distribution" /> <cc:permits rdf:resource="http://creativecommons.org/ns#DerivativeWorks" /> </cc:License > </rdf:RDF > </metadata > </svg >
         </div>
+        <div class="r8limit">[loading]</div>
         <a style="color: LightBlue;" href="#" onclick="load_list();">main menu</a><br>
         <b><a style="color: FireBrick;" href="#"
                 onclick="if(prompt('type ok to confirm') === 'ok') { set('stage', ''); localStorage.clear(); load_list(); } else {  }">reset</a></b>
@@ -329,32 +330,60 @@
 
         function r8limit(content = '') {
             div.innerHTML = '<h1 style="margin-bottom: -25px; margin-top: -10px;">whoops!</h1><br><p>our servers are currently rate-limiting you, which means you have exceeded the amount of refreshes. please wait for ~5 minutes before trying again. don\'t worry, I do have a timer here for you:</p><h4 style="margin-top: 0;" class="timer"></h4><br><br>';
-            div.innerHTML += content;
-            const future = Date.now() + (1000 * 60 * 5);
-            const interval = setInterval(function () {
-                let milliseconds = future - Date.now(), duration = milliseconds,
-                    seconds = Math.floor((duration / 1000) % 60),
-                    minutes = Math.floor((duration / (1000 * 60)) % 60),
-                    hours = Math.floor((duration / (1000 * 60 * 60)) % 24);
+            fetch('https://api.github.com/rate_limit').then(r => r.json()).then((data) => {
+                if(data.resources.core.remaining === 0) {
+                    div.innerHTML += content;
+                    const future = Date.now() + data.resources.core.reset;
+                    const interval = setInterval(function () {
+                        let milliseconds = future - Date.now(), duration = milliseconds,
+                            seconds = Math.floor((duration / 1000) % 60),
+                            minutes = Math.floor((duration / (1000 * 60)) % 60),
+                            hours = Math.floor((duration / (1000 * 60 * 60)) % 24);
 
-                hours = (hours < 10) ? "0" + hours : hours;
-                minutes = (minutes < 10) ? "0" + minutes : minutes;
-                seconds = (seconds < 10) ? "0" + seconds : seconds;
+                        hours = (hours < 10) ? "0" + hours : hours;
+                        minutes = (minutes < 10) ? "0" + minutes : minutes;
+                        seconds = (seconds < 10) ? "0" + seconds : seconds;
 
-                if (hours === 0 && minutes === 0 && seconds === 0) {
-                    clearInterval(interval);
-                    div.innerHTML = "Time is up! Refreshing...";
-                    setTimeout(load_list, 500)
-                } else {
-                    document.querySelector(".timer").innerHTML = hours + ":" + minutes + ":" + seconds;
+                        if (hours === 0 && minutes === 0 && seconds === 0) {
+                            clearInterval(interval);
+                            div.innerHTML = "Time is up! Refreshing...";
+                            setTimeout(load_list, 500)
+                        } else {
+                            document.querySelector(".timer").innerHTML = hours + ":" + minutes + ":" + seconds;
+                        }
+                    }, 1000)
                 }
-            }, 1000)
+            }).catch(() => {
+                div.innerHTML = "<h1>you seem to be offline, awasp does not work without an internet connection.</h1>"
+            })
         }
 
         /* Modify this variable in your package to load additional games into memory */
         let static_games = [];
 
         function load_list() {
+            fetch("https://api.github.com/rate_limit").then(r => r.json().then(data => {
+                const rate = document.querySelector(".r8limit");
+                const future = Date.now() + data.resources.core.reset;
+                const interval = setInterval(function () {
+                    let milliseconds = future - Date.now(), duration = milliseconds,
+                        seconds = Math.floor((duration / 1000) % 60),
+                        minutes = Math.floor((duration / (1000 * 60)) % 60),
+                        hours = Math.floor((duration / (1000 * 60 * 60)) % 24);
+
+                    hours = (hours < 10) ? "0" + hours : hours;
+                    minutes = (minutes < 10) ? "0" + minutes : minutes;
+                    seconds = (seconds < 10) ? "0" + seconds : seconds;
+
+                    if (hours === 0 && minutes === 0 && seconds === 0) {
+                        clearInterval(interval);
+                        rate.innerHTML = `Remaining refreshes: ${Math.round(60 / 7)}`;
+                    } else {
+                        rate.innerHTML = `Remaining refreshes: ${Math.round(data.resources.core.remaining / 7)} Resets in ${hours}:${minutes}:${seconds}`;
+                    }
+                }, 1000)
+            }))
+
             pause_load_stage = true;
             document.querySelector('debug').style.display = 'block';
             div.innerHTML = '<h1 style="margin-bottom: -25px; margin-top: -10px;">awasp games</h1><br>Loading...'
@@ -509,15 +538,15 @@
             } */
         }, 500);
 
-        fetch('./static/' + 'list?v=' + Math.floor(Math.random() * 999999).toString()).then(r => r.text().then(data => {
-            if (data) {
-                if (!window.loaded) window.loaded = [];
-                load_list();
+        fetch("https://api.github.com/rate_limit").then(r => r.json().then(data2 => {
+            if(data2.resources.core.remaining === 0) {
+                r8limit();
             } else {
-                div.innerHTML = "<h1>you seem to be offline, awasp does not work without an internet connection.</h1>"
+                load_list();
             }
-        })).catch(() => {
-            div.innerHTML = "<h1>you seem to be offline, awasp does not work without an internet connection.</h1>"
+        })).catch((e) => {
+            console.warn(e);
+            div.innerHTML = "<h1>you seem to be offline, awasp does not work without an internet connection.</h1>";
         });
     </script>
     <style>
