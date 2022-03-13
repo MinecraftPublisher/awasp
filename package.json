@@ -3,5 +3,8 @@
   "version": "1.0.0",
   "scripts": {
     "start": "serve"
+  },
+  "dependencies": {
+    "axios": "^0.26.0"
   }
 }

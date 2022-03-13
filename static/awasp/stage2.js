@@ -26,7 +26,12 @@ function stage2__tv() {
 }
 
 function stage2__trap() {
-    div.innerHTML = "gotta wait some more. you're scared of the dark.<br><br><a href=\"#\" onclick=\"stage('awasp', 'stage2');\">return to the living room</a>";
+    if(get('found_light')) {
+        div.innerHTML = "excuse me, how are you here...?<br><br><a href=\"#\" onclick=\"stage('awasp', 'stage2');\">return to the living room</a>";
+    } else {
+        set('trap_test', 'true');
+        div.innerHTML = "look around a little bit more, and you'll find something that'll help keep the dark away.<br><br><a href=\"#\" onclick=\"stage('awasp', 'stage2');\">return to the living room</a>";
+    }
 }
 
 function stage2__box() {
